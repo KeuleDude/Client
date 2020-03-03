@@ -6,8 +6,16 @@ public class Client {
     public static Socket socket;
     public static void main(String[] args) {
         try {
-            socket = new Socket("173.249.19.195",1337);
+            socket = new Socket("localhost",1337);
             System.out.println("Succesfully connected to Server: 173.249.19.195:1337");
+            System.out.println("Please Type in your name:");
+            Scanner scanner = new Scanner(System.in);
+            String nachricht = scanner.nextLine();
+            try {
+                Client.schreibeNachricht(Client.socket, "/name "+nachricht);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             laufen(socket);
         } catch (IOException e) {
             System.err.println("Couldn`t reach Server. Please try again later");
@@ -41,7 +49,7 @@ public class Client {
                                 socket.getOutputStream()));
         printWriter.print(nachricht);
         printWriter.flush();
-        if(nachricht.equalsIgnoreCase(".quit")){
+        if(nachricht.equalsIgnoreCase("/quit")){
             System.out.println("Connetion closed");
             socket.close();
             System.exit(0);
